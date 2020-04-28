@@ -5,5 +5,5 @@ module.exports = (app) => {
 
   app.post('/posts', postController.create);
 
-  // app.get('/notes', postController.findAll);
+  app.get('/posts', postController.findAll);
 }

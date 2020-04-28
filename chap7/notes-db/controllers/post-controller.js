@@ -1,4 +1,4 @@
-const Post = require('../models/Post');
+const Post = require('../models/Post.js');
 
 exports.create = (req, res) => {
   if(!req.body.content) {
@@ -17,6 +17,17 @@ exports.create = (req, res) => {
   post.save()
   .then(data => {
     res.send(data);
+  }).catch(err => {
+    res.status(500).send({
+      message: err.message
+    });
+  });
+}
+
+exports.findAll = (req, res) => {
+  Post.find()
+  .then(notes => {
+    res.send(notes);
   }).catch(err => {
     res.status(500).send({
       message: err.message
