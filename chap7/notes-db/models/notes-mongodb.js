@@ -26,7 +26,8 @@ exports.create = function(key, title, body) {
   return exports.connectDB()
   .then(db => {
     var note = new Note(key, title, body);
-    var collection = db.collection('notes-db');
+    var database = db.db('notes-db');
+    var collection = database.collection('notes');
     return collection.insertOne({
       notekey: key, title: title, body: body
     }).then(result => { return note; });
@@ -37,7 +38,8 @@ exports.update = function(key, title, body) {
   return exports.connectDB()
   .then(db => {
     var note = new Note(key, title, body);
-    var collection = db.collection('notes-db');
+    var database = db.db('notes-db');
+    var collection = database.collection('notes');
     return collection.updateOne({ notekey: key },
       { $set: { title: title, body: body }}
     ).then(result => { return note; });
@@ -47,7 +49,8 @@ exports.update = function(key, title, body) {
 exports.read = function(key) {
   return exports.connectDB()
   .then(db => {
-    var collection = db.collection('notes-db');
+    var database = db.db('notes-db');
+    var collection = database.collection('notes');
     return collection.findOne({ notekey: key })
     .then(doc => {
       var note = new Note(doc.notekey, doc.title, doc.body);
@@ -59,7 +62,8 @@ exports.read = function(key) {
 exports.destroy = function(key) {
   return exports.connectDB()
   .then(db => {
-    var collection = db.collection('notes-db');
+    var database = db.db('notes-db');
+    var collection = database.collection('notes');
     return collection.findOneAndDelete({ notekey: key });
   });
 }
@@ -67,7 +71,8 @@ exports.destroy = function(key) {
 exports.keylist = function() {
   return exports.connectDB()
   .then(db => {
-    var collection = db.collection('notes');
+    var database = db.db('notes-db');
+    var collection = database.collection('notes');
     return new Promise((resolve, reject) => {
       var keyz = [];
       collection.find({}).forEach(
@@ -84,7 +89,8 @@ exports.keylist = function() {
 exports.count = function() {
   return exports.connectDB()
   .then(db => {
-    var collection = db.collection('notes-db');
+    var database = db.db('notes-db');
+    var collection = database.collection('notes');
     return new Promise((resolve, reject) => {
       collection.count({}, (err, count) => {
         if(err) reject(err);
