@@ -13,7 +13,7 @@ router.get('/books', (req, res, next) => {
   })
 });
 
-router.post('/books', (req, res, next) => {
+router.post('/books/add', (req, res, next) => {
   let name = req.body.name;
   let author = req.body.author;
   let errors = false;
