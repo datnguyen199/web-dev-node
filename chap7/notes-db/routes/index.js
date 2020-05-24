@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var notes = require('../models/notes-memory');
+// var notes = require('../models/notes-memory');
+var notes = require('../models/notes-mongodb');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
