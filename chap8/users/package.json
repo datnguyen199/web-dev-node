@@ -1,0 +1,19 @@
+{
+  "name": "user-auth-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "user-server.js",
+  "scripts": {
+    "start": "DEBUG=users:* PORT=3333 SEQUELIZE_CONNECT=sequelize-sqlite.yaml node user-server"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "debug": "^2.6.9",
+    "js-yaml": "^3.14.0",
+    "mysql": "^2.18.1",
+    "restify": "^4.3.4",
+    "sequelize": "^3.35.1",
+    "sqlite": "^4.0.9"
+  }
+}
