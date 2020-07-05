@@ -1,6 +1,14 @@
 <header>
   <h1><%= title %></h1>
   <div class='navbar'>
-  <p><a href='/'>Home</a> | <a href='/notes/add'>ADD Note</a></p>
+    <% if (user && typeof hideAddNote === 'undefined') { %>
+      <p><a href='/'>Home</a> | <a href='/notes/add'>ADD Note</a></p>
+    <% } %>
   </div>
+  <% if (user) { %>
+    <a class="btn btn-primary" href="/users/logout">
+    Log Out <span class="badge"><%= user.username %></span></a>
+  <% } else { %>
+    <a class="btn btn-primary" href="/users/login">Log in</a>
+  <% } %>
 </header>

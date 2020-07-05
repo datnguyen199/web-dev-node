@@ -5,17 +5,24 @@ var express = require('express');
 var router = express.Router();
 // var notes = require('../models/notes-memory');
 var notes = require('../models/notes-mongodb');
+const usersRouter = require('./users');
 
-router.get('/add', (req, res, next) => {
+router.get('/add', usersRouter.ensureAuthenticated, (req, res, next) => {
   res.render('noteedit', {
     title: "Add a note",
     docreate: true,
     notekey: "",
-    note: undefined
+    note: undefined,
+    user: req.user ? req.user : undefined,
+    breadcrumbs: [
+      { href: '/', text: 'Home' },
+      { active: true, text: "Add Note" }
+    ],
+    hideAddNote: true
   });
 });
 
-router.post('/save', (req, res, next) => {
+router.post('/save', usersRouter.ensureAuthenticated, (req, res, next) => {
   var promise;
   if(req.body.docreate === "create") {
     promise = notes.create(req.body.notekey, req.body.title, req.body.body);
@@ -34,37 +41,40 @@ router.get('/view', (req, res, next) => {
     res.render('noteview', {
       title: note ? note.title : "",
       notekey: req.query.key,
-      note: note
+      note: note,
+      user: req.user ? req.user : undefined
     })
   })
   .catch(err => { next(err); });
 })
 
-router.get('/edit', (req, res, next) => {
+router.get('/edit', usersRouter.ensureAuthenticated, (req, res, next) => {
   notes.read(req.query.key)
   .then(note => {
     res.render('noteedit', {
       title: note ? ("Edit " + note.title) : "Add a note",
       docreate: false,
       notekey: req.query.key,
-      note: note
+      note: note,
+      user: req.user ? req.user : undefined
     });
   });
 })
 
-router.get('/destroy', (req, res, next) => {
+router.get('/destroy', usersRouter.ensureAuthenticated, (req, res, next) => {
   notes.read(req.query.key)
   .then(note => {
     res.render('notedestroy', {
       title: note ? note.title : "",
       notekey: req.query.key,
-      note: note
+      note: note,
+      user: req.user ? req.user : undefined
     });
   })
   .catch(err => { next(err); });
 })
 
-router.post('/destroy/confirm', (req, res, next) => {
+router.post('/destroy/confirm', usersRouter.ensureAuthenticated, (req, res, next) => {
   console.log(req.body.notekey);
   notes.destroy(req.body.notekey)
   .then(() => { res.redirect('/'); })
