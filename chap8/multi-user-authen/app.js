@@ -21,9 +21,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  store: new FileStore({ path: "sessions" }),
+  secret: 'keyboard mouse',
+  resave: true,
+  saveUninitialized: true
+}));
+
+usersRouter.initPassport(app);
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/users', usersRouter.router);
 app.use('/notes', notes);
 app.use('/posts', posts);
 

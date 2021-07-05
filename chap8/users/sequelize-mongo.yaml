@@ -1,0 +1,6 @@
+dbname: users
+username: root
+password: 1234
+params:
+  dialect: mongo
+  storage: user-sequelize.mongo
